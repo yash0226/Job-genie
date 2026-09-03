@@ -5,6 +5,7 @@ import Script from "next/script";
 import { Toaster } from 'react-hot-toast'
 import { Analytics } from "@vercel/analytics/react";
 
+// Vercel Web Analytics enabled
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
