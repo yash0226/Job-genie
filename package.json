@@ -1,0 +1,42 @@
+{
+  "name": "webpay",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
+    "@supabase/auth-helpers-react": "^0.5.0",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.50.3",
+    "@types/bcryptjs": "^2.4.6",
+    "@vercel/analytics": "^2.0.1",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "next": "15.3.8",
+    "next-auth": "^4.24.11",
+    "openai": "^5.22.0",
+    "razorpay": "^2.9.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
+    "supabase": "^2.30.4"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.19.4",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "dotenv": "^17.0.1",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.5",
+    "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
