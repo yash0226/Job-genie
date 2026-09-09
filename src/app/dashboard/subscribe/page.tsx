@@ -250,7 +250,7 @@ export default function Subscribe() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span>Join 1,820+ users preparing for their calls & interviews</span>
+            <span>Join our community of verified job seekers & professionals</span>
           </div>
         </div>
 
@@ -292,7 +292,7 @@ export default function Subscribe() {
               <span className="text-[10px] font-bold text-emerald-300 bg-emerald-950/70 px-1.5 py-0.5 rounded-full border border-emerald-500/30">Save 40%</span>
             </button>
           </div>
-          <p className="text-xs text-indigo-300/90 font-medium">⚡ 82% of job seekers choose the Monthly Plan for interview preparation</p>
+          <p className="text-xs text-indigo-300/90 font-medium">⚡ 82% of job seekers choose the Monthly Pro Plan for interview preparation</p>
         </div>
 
         <div className="mt-12">
@@ -381,14 +381,14 @@ export default function Subscribe() {
                 const period = isDaily ? 'day' : isYearly ? 'year' : 'month'
                 const inrAmount = Math.round((plan.price || 0) * USD_TO_INR)
                 
-                // Showstopper design for Monthly Premium (Most Bought)
+                // Showstopper design for Monthly Pro / Premium (999 LIMITED TIME DISCOUNT)
                 if (isPremiumMonthly) {
                   return (
                     <div 
                       key={plan.id} 
-                      className="relative rounded-2xl p-[2px] bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 shadow-[0_0_50px_rgba(99,102,241,0.35)] transform lg:-translate-y-3 transition-all duration-300"
+                      className="relative rounded-2xl p-[2px] bg-gradient-to-b from-amber-400 via-indigo-500 to-purple-600 shadow-[0_0_50px_rgba(99,102,241,0.4)] transform lg:-translate-y-3 transition-all duration-300"
                     >
-                      <div className="bg-gradient-to-b from-slate-900/95 via-indigo-950/40 to-slate-950/95 rounded-[14px] p-6 sm:p-8 flex flex-col justify-between h-full relative overflow-hidden backdrop-blur-xl">
+                      <div className="bg-gradient-to-b from-slate-900/95 via-indigo-950/50 to-slate-950/95 rounded-[14px] p-6 sm:p-8 flex flex-col justify-between h-full relative overflow-hidden backdrop-blur-xl">
                         {/* Top Most Bought Badge */}
                         <div className="absolute top-0 right-0 bg-gradient-to-r from-amber-500 to-orange-500 text-black text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-bl-xl shadow-lg flex items-center gap-1.5">
                           <span>🔥</span>
@@ -396,20 +396,23 @@ export default function Subscribe() {
                         </div>
 
                         <div>
-                          <div className="inline-flex items-center gap-1.5 text-xs text-indigo-300 bg-indigo-500/20 border border-indigo-500/30 px-2.5 py-1 rounded-full font-semibold mb-3">
-                            <span>✨</span> Best Value for Interviews
+                          <div className="inline-flex items-center gap-1.5 text-xs text-amber-300 bg-amber-500/20 border border-amber-500/30 px-3 py-1 rounded-full font-bold mb-3">
+                            <span>⚡</span> LIMITED TIME DISCOUNT — SAVE 50%
                           </div>
                           <h3 className="text-2xl sm:text-3xl font-extrabold text-white">{plan.name}</h3>
-                          <p className="mt-1 text-sm text-indigo-200/80">{plan.description}</p>
+                          <p className="mt-1 text-sm text-indigo-200/90">{plan.description}</p>
                           
-                          <div className="mt-6 p-4 rounded-xl bg-white/5 border border-white/10">
-                            <div className="flex items-baseline gap-3">
-                              <span className="text-4xl sm:text-5xl font-black text-white">₹{inrAmount.toLocaleString('en-IN')}</span>
+                          <div className="mt-6 p-4 rounded-xl bg-white/5 border border-indigo-500/30 shadow-inner">
+                            <div className="flex items-baseline gap-3 flex-wrap">
+                              <span className="text-2xl text-gray-500 line-through font-bold">₹1,999</span>
+                              <span className="text-4xl sm:text-5xl font-black text-emerald-400">
+                                ₹{inrAmount <= 999 ? inrAmount.toLocaleString('en-IN') : '999'}
+                              </span>
                               <span className="text-base font-semibold text-indigo-200">/{period}</span>
                               <span className="text-sm text-gray-400">(${plan.price})</span>
                             </div>
-                            <div className="mt-2 flex items-center gap-2 text-xs text-emerald-400 font-semibold">
-                              <span>✓ Includes Live Audio Listen & Resume Memory</span>
+                            <div className="mt-2 inline-flex items-center gap-1.5 text-xs text-emerald-300 font-bold bg-emerald-950/70 border border-emerald-500/40 px-2.5 py-1 rounded-full">
+                              <span>🎉</span> Special Offer: ₹1,000 Flat Discount • Limited Time
                             </div>
                           </div>
 
@@ -427,7 +430,7 @@ export default function Subscribe() {
                           <button
                             onClick={() => handlePayment(plan)}
                             disabled={processingPayment}
-                            className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 hover:from-indigo-400 hover:via-purple-500 hover:to-indigo-500 text-white py-3.5 text-base font-bold shadow-[0_0_30px_rgba(99,102,241,0.5)] hover:shadow-[0_0_40px_rgba(99,102,241,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ring-1 ring-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-indigo-600 to-purple-600 hover:from-amber-400 hover:via-indigo-500 hover:to-purple-500 text-white py-3.5 text-base font-bold shadow-[0_0_35px_rgba(99,102,241,0.55)] hover:shadow-[0_0_45px_rgba(99,102,241,0.75)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ring-1 ring-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {processingPayment ? (
                               <span className="flex items-center justify-center">
@@ -439,14 +442,14 @@ export default function Subscribe() {
                               </span>
                             ) : (
                               <>
-                                <span>Subscribe Monthly Premium</span>
+                                <span>Subscribe Pro at ₹999 (50% OFF)</span>
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                 </svg>
                               </>
                             )}
                           </button>
-                          <p className="text-center text-[11px] text-gray-400 mt-2">Instant activation • Cancel anytime</p>
+                          <p className="text-center text-[11px] text-gray-400 mt-2">Instant activation • Special promotional price</p>
                         </div>
                       </div>
                     </div>
