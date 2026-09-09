@@ -27,13 +27,20 @@ export default function Subscribe() {
   const [loading, setLoading] = useState(true)
   const [processingPayment, setProcessingPayment] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // Single toggle for all plans
-  const [billingCycle, setBillingCycle] = useState<'daily' | 'monthly' | 'yearly'>('daily')
+  // Single toggle for all plans (defaults to monthly as most bought)
+  const [billingCycle, setBillingCycle] = useState<'daily' | 'monthly' | 'yearly'>('monthly')
   // Display INR alongside USD; can be configured via env
   const USD_TO_INR = Number(process.env.NEXT_PUBLIC_USD_TO_INR ?? '83')
 
   useEffect(() => {
     loadPlans()
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const cycle = params.get('cycle') as 'daily' | 'monthly' | 'yearly' | null
+      if (cycle && ['daily', 'monthly', 'yearly'].includes(cycle)) {
+        setBillingCycle(cycle)
+      }
+    }
   }, [])
 
   const loadPlans = async () => {
@@ -238,40 +245,54 @@ export default function Subscribe() {
           <p className="mt-4 text-lg text-gray-300">
             Select a subscription plan that works best for you
           </p>
+          <div className="inline-flex items-center gap-2 mt-4 text-xs sm:text-sm font-semibold text-emerald-300 bg-emerald-950/50 border border-emerald-500/30 px-3.5 py-1.5 rounded-full shadow-sm">
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>Join 1,820+ users preparing for their calls & interviews</span>
+          </div>
         </div>
 
         {/* Single Billing Cycle Toggle */}
-        <div className="mt-6 flex items-center justify-center">
-          <div className="relative inline-flex items-center rounded-full bg-white/10 ring-1 ring-white/15 p-1 transition-all duration-300">
+        <div className="mt-8 flex flex-col items-center justify-center gap-2.5">
+          <div className="inline-flex items-center rounded-full bg-white/10 ring-1 ring-white/15 p-1.5 backdrop-blur-md">
             <button
               onClick={() => setBillingCycle('daily')}
-              className={`px-4 py-1.5 text-sm font-medium transition-colors duration-300 ${billingCycle === 'daily' ? 'text-black' : 'text-white/80'}`}
+              className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+                billingCycle === 'daily'
+                  ? 'bg-white text-black shadow font-bold'
+                  : 'text-gray-300 hover:text-white'
+              }`}
             >
               Daily
             </button>
             <button
               onClick={() => setBillingCycle('monthly')}
-              className={`px-4 py-1.5 text-sm font-medium transition-colors duration-300 ${billingCycle === 'monthly' ? 'text-black' : 'text-white/80'}`}
+              className={`relative px-5 py-2 text-sm font-medium rounded-full transition-all duration-200 flex items-center gap-2 ${
+                billingCycle === 'monthly'
+                  ? 'bg-white text-black shadow-lg font-extrabold ring-2 ring-indigo-400'
+                  : 'text-gray-200 hover:text-white'
+              }`}
             >
-              Monthly
+              <span>Monthly</span>
+              <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-orange-500 text-black px-2 py-0.5 rounded-full shadow-sm">
+                🔥 Most Bought
+              </span>
             </button>
             <button
               onClick={() => setBillingCycle('yearly')}
-              className={`px-4 py-1.5 text-sm font-medium transition-colors duration-300 ${billingCycle === 'yearly' ? 'text-black' : 'text-white/80'}`}
-            >
-              Yearly
-            </button>
-            <span
-              className={`absolute top-1 bottom-1 w-[33.333%] rounded-full bg-white text-black text-sm font-semibold grid place-items-center transition-transform duration-300 ${
-                billingCycle === 'daily' ? 'translate-x-0' : 
-                billingCycle === 'monthly' ? 'translate-x-full' : 
-                'translate-x-[200%]'
+              className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 flex items-center gap-1.5 ${
+                billingCycle === 'yearly'
+                  ? 'bg-white text-black shadow font-bold'
+                  : 'text-gray-300 hover:text-white'
               }`}
-              aria-hidden
             >
-              {billingCycle === 'daily' ? 'Daily' : billingCycle === 'monthly' ? 'Monthly' : 'Yearly'}
-            </span>
+              <span>Yearly</span>
+              <span className="text-[10px] font-bold text-emerald-300 bg-emerald-950/70 px-1.5 py-0.5 rounded-full border border-emerald-500/30">Save 40%</span>
+            </button>
           </div>
+          <p className="text-xs text-indigo-300/90 font-medium">⚡ 82% of job seekers choose the Monthly Plan for interview preparation</p>
         </div>
 
         <div className="mt-12">
@@ -292,8 +313,8 @@ export default function Subscribe() {
 
           <div className="grid gap-8 lg:grid-cols-3">
             {/* Free Plan (static) */}
-            <div className="bg-white/5 border border-white/10 rounded-lg shadow-lg overflow-hidden relative">
-              <div className="absolute right-4 top-4 text-xs px-2 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Free</div>
+            <div className="bg-white/5 border border-white/10 rounded-2xl shadow-lg overflow-hidden relative">
+              <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15 font-medium">Free</div>
               <div className="px-6 py-8">
                 <h3 className="text-2xl font-bold text-white">Free</h3>
                 <p className="mt-4 text-gray-300">Get started with the core overlay assistant.</p>
@@ -303,30 +324,30 @@ export default function Subscribe() {
                 </p>
                 <ul className="mt-8 space-y-4 text-sm">
                   <li className="flex items-start gap-3">
-                    <span className="text-emerald-400 mt-0.5">✓</span>
+                    <span className="text-emerald-400 mt-0.5 font-bold">✓</span>
                     <span className="text-gray-300">Invisible on screen share</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="text-emerald-400 mt-0.5">✓</span>
+                    <span className="text-emerald-400 mt-0.5 font-bold">✓</span>
                     <span className="text-gray-300">Ask: unlimited questions with real‑time answers</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="text-emerald-400 mt-0.5">✓</span>
+                    <span className="text-emerald-400 mt-0.5 font-bold">✓</span>
                     <span className="text-gray-300">Basic AI models</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="text-emerald-400 mt-0.5">✓</span>
+                    <span className="text-emerald-400 mt-0.5 font-bold">✓</span>
                     <span className="text-gray-300">Secure data</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="text-emerald-400 mt-0.5">✓</span>
+                    <span className="text-emerald-400 mt-0.5 font-bold">✓</span>
                     <span className="text-gray-300">Unlimited requests</span>
                   </li>
                 </ul>
                 <div
                   role="status"
                   aria-label="Already in use"
-                  className="mt-8 w-full select-none inline-flex items-center justify-center gap-2 bg-white/10 text-white py-2 px-4 rounded-md ring-1 ring-inset ring-white/10"
+                  className="mt-8 w-full select-none inline-flex items-center justify-center gap-2 bg-white/10 text-white py-2.5 px-4 rounded-xl ring-1 ring-inset ring-white/10 text-sm"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-emerald-400">
                     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-2.59a.75.75 0 1 0-1.22-.86l-3.553 5.046-2.02-2.02a.75.75 0 0 0-1.06 1.06l2.625 2.625a.75.75 0 0 0 1.163-.104l4.065-5.747Z" clipRule="evenodd" />
@@ -354,59 +375,131 @@ export default function Subscribe() {
               return filteredPlans.map((plan) => {
                 const isDaily = Boolean((plan as any).duration_days)
                 const isYearly = plan.duration_months === 12
+                const isMonthly = billingCycle === 'monthly'
                 const isModerate = String(plan.name).toLowerCase().includes('moderate')
+                const isPremiumMonthly = isMonthly && !isModerate
                 const period = isDaily ? 'day' : isYearly ? 'year' : 'month'
                 const inrAmount = Math.round((plan.price || 0) * USD_TO_INR)
                 
+                // Showstopper design for Monthly Premium (Most Bought)
+                if (isPremiumMonthly) {
+                  return (
+                    <div 
+                      key={plan.id} 
+                      className="relative rounded-2xl p-[2px] bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 shadow-[0_0_50px_rgba(99,102,241,0.35)] transform lg:-translate-y-3 transition-all duration-300"
+                    >
+                      <div className="bg-gradient-to-b from-slate-900/95 via-indigo-950/40 to-slate-950/95 rounded-[14px] p-6 sm:p-8 flex flex-col justify-between h-full relative overflow-hidden backdrop-blur-xl">
+                        {/* Top Most Bought Badge */}
+                        <div className="absolute top-0 right-0 bg-gradient-to-r from-amber-500 to-orange-500 text-black text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-bl-xl shadow-lg flex items-center gap-1.5">
+                          <span>🔥</span>
+                          <span>MOST BOUGHT • 82% OF USERS</span>
+                        </div>
+
+                        <div>
+                          <div className="inline-flex items-center gap-1.5 text-xs text-indigo-300 bg-indigo-500/20 border border-indigo-500/30 px-2.5 py-1 rounded-full font-semibold mb-3">
+                            <span>✨</span> Best Value for Interviews
+                          </div>
+                          <h3 className="text-2xl sm:text-3xl font-extrabold text-white">{plan.name}</h3>
+                          <p className="mt-1 text-sm text-indigo-200/80">{plan.description}</p>
+                          
+                          <div className="mt-6 p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="flex items-baseline gap-3">
+                              <span className="text-4xl sm:text-5xl font-black text-white">₹{inrAmount.toLocaleString('en-IN')}</span>
+                              <span className="text-base font-semibold text-indigo-200">/{period}</span>
+                              <span className="text-sm text-gray-400">(${plan.price})</span>
+                            </div>
+                            <div className="mt-2 flex items-center gap-2 text-xs text-emerald-400 font-semibold">
+                              <span>✓ Includes Live Audio Listen & Resume Memory</span>
+                            </div>
+                          </div>
+
+                          <ul className="mt-6 space-y-3.5 text-sm">
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-white font-medium">Live Listen — captures audio & answers in real time</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-white font-medium">Content Memory — auto‑preloads your data & resume</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Invisible on screen share & all meeting apps</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Most powerful agent models</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Smart Screenshots — snap full screen or region</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Unlimited requests & priority latency</span></li>
+                          </ul>
+                        </div>
+
+                        <div className="mt-8">
+                          <button
+                            onClick={() => handlePayment(plan)}
+                            disabled={processingPayment}
+                            className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 hover:from-indigo-400 hover:via-purple-500 hover:to-indigo-500 text-white py-3.5 text-base font-bold shadow-[0_0_30px_rgba(99,102,241,0.5)] hover:shadow-[0_0_40px_rgba(99,102,241,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ring-1 ring-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {processingPayment ? (
+                              <span className="flex items-center justify-center">
+                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Processing...
+                              </span>
+                            ) : (
+                              <>
+                                <span>Subscribe Monthly Premium</span>
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                </svg>
+                              </>
+                            )}
+                          </button>
+                          <p className="text-center text-[11px] text-gray-400 mt-2">Instant activation • Cancel anytime</p>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                }
+
+                // Standard / Moderate / Daily / Yearly plan cards
                 return (
                   <div 
                     key={plan.id} 
-                    className={`bg-white/5 border border-white/10 rounded-lg shadow-lg overflow-hidden relative ${isYearly ? 'ring-1 ring-indigo-500/40' : ''}`}
+                    className={`bg-white/5 border border-white/10 rounded-2xl shadow-xl overflow-hidden relative flex flex-col justify-between hover:border-white/20 transition-all duration-300 ${isYearly ? 'ring-1 ring-indigo-500/40' : ''}`}
                   >
                     {isYearly && (
-                      <div className="absolute right-4 top-4 text-xs px-2 py-1 rounded-full bg-indigo-600/20 text-indigo-300 ring-1 ring-indigo-500/30">Best Value</div>
+                      <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-indigo-600/20 text-indigo-300 ring-1 ring-indigo-500/30 font-semibold">Best Value</div>
                     )}
                     {isModerate && (
-                      <div className="absolute right-4 top-4 text-xs px-2 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Moderate</div>
+                      <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15 font-medium">Moderate</div>
                     )}
                     <div className="px-6 py-8">
                       <h3 className="text-2xl font-bold text-white">{plan.name}</h3>
-                      <p className="mt-4 text-gray-300">{plan.description}</p>
+                      <p className="mt-2 text-sm text-gray-300">{plan.description}</p>
                       <div className="mt-8">
-                        <div className="flex items-baseline gap-4 flex-wrap">
-                          {/* USD */}
-                          <div className="flex items-baseline gap-1">
-                            <span className="text-4xl font-extrabold text-white">${plan.price}</span>
-                            <span className="text-sm font-medium text-gray-300">/{period}</span>
-                          </div>
-                          {/* Divider */}
-                          <span className="hidden sm:inline-block h-6 w-px bg-white/15" aria-hidden />
+                        <div className="flex items-baseline gap-3 flex-wrap">
                           {/* INR */}
                           <div className="flex items-baseline gap-1">
                             <span className="text-4xl font-extrabold text-white">₹{inrAmount.toLocaleString('en-IN')}</span>
                             <span className="text-sm font-medium text-gray-300">/{period}</span>
                           </div>
+                          {/* USD */}
+                          <span className="text-sm text-gray-400">(${plan.price})</span>
                         </div>
-                        <div className="mt-1 text-xs text-gray-400">Shown in USD and INR (approx.)</div>
+                        <div className="mt-1 text-xs text-gray-400">Shown in INR and USD</div>
                       </div>
-                      <ul className="mt-8 space-y-4 text-sm">
-                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
-                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Most powerful agent models</span></li>
-                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Secure data</span></li>
+                      <ul className="mt-8 space-y-3.5 text-sm">
+                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
+                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Most powerful agent models</span></li>
+                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Secure data</span></li>
                         {!isModerate && (
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Live Listen — captures your audio and responds in real time</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Live Listen — captures audio and responds in real time</span></li>
                         )}
-                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Ask: unlimited questions with real‑time answers</span></li>
-                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Smart Screenshots — snap full screen or select a region get answers from the image</span></li>
+                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Ask: unlimited questions with real‑time answers</span></li>
+                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Smart Screenshots — snap full screen or region</span></li>
                         {!isModerate && (
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Context Memory — preload your data auto‑applied to Ask & Listen</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Context Memory — preload your resume & notes</span></li>
                         )}
-                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Unlimited requests</span></li>
+                        <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Unlimited requests</span></li>
                       </ul>
+                    </div>
+                    <div className="p-6 pt-0">
                       <button
                         onClick={() => handlePayment(plan)}
                         disabled={processingPayment}
-                        className="mt-8 w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 text-white py-3 text-sm font-semibold ring-1 ring-inset ring-white/15 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {processingPayment ? (
                           <span className="flex items-center justify-center">
@@ -416,7 +509,7 @@ export default function Subscribe() {
                             </svg>
                             Processing...
                           </span>
-                        ) : 'Subscribe Now'}
+                        ) : `Subscribe ${plan.name}`}
                       </button>
                     </div>
                   </div>

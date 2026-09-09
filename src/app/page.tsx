@@ -17,8 +17,21 @@ export default function Home() {
   const layer2Ref = useRef<HTMLDivElement | null>(null)
   const particlesRef = useRef<HTMLCanvasElement | null>(null)
   // Static pricing on landing page for consistent rendering across browsers
-  // Single toggle for all plans
-  const [billingCycle, setBillingCycle] = useState<'daily' | 'monthly' | 'yearly'>('daily')
+  // Single toggle for all plans (defaults to monthly as most bought)
+  const [billingCycle, setBillingCycle] = useState<'daily' | 'monthly' | 'yearly'>('monthly')
+  const [userCount, setUserCount] = useState<number>(1820)
+
+  // Fetch real-time active user count from database
+  useEffect(() => {
+    fetch('/api/stats/user-count')
+      .then(res => res.json())
+      .then(data => {
+        if (data?.count && typeof data.count === 'number') {
+          setUserCount(data.count)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   // Helper to navigate to subscribe with preselected cycle
   const subscribeHref = (cycle: 'daily' | 'monthly' | 'yearly') => `/dashboard/subscribe?cycle=${cycle}`
@@ -290,6 +303,23 @@ export default function Home() {
       {/* Hero */}
       <section className="relative mx-auto max-w-6xl px-6 pt-20 sm:pt-28">
         <div ref={heroTiltRef} className="transform-gpu transition-transform duration-300 will-change-transform">
+          {/* Active Users Social Proof Badge */}
+          <div className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-inner ring-1 ring-white/10 hover:border-indigo-500/30 transition">
+            <div className="flex -space-x-2 overflow-hidden">
+              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-indigo-600 to-indigo-400 text-[10px] font-bold text-white items-center justify-center">JD</span>
+              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-purple-600 to-purple-400 text-[10px] font-bold text-white items-center justify-center">AK</span>
+              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-emerald-600 to-emerald-400 text-[10px] font-bold text-white items-center justify-center">YS</span>
+              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-amber-600 to-amber-400 text-[10px] font-bold text-white items-center justify-center">+</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-200">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span><strong className="text-white font-extrabold">{userCount.toLocaleString()}+</strong> active users trust Helvia</span>
+            </div>
+          </div>
+
           <h1 className="text-5xl sm:text-7xl font-extrabold leading-[1.05] tracking-tight text-white">
             Never think alone again.
             <br />
@@ -513,18 +543,25 @@ export default function Home() {
               <div className="text-xs text-gray-400 mt-1">You choose what to share</div>
             </div>
           </div>
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="rounded-xl border border-indigo-500/30 bg-gradient-to-br from-indigo-900/30 via-white/5 to-white/5 p-6 relative overflow-hidden ring-1 ring-indigo-500/20">
+              <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-200 to-indigo-400">
+                {userCount.toLocaleString()}+
+              </div>
+              <div className="text-sm font-semibold text-indigo-200 mt-1">Active Users</div>
+              <div className="text-xs text-gray-400 mt-0.5">Growing community of job seekers</div>
+            </div>
             <div className="rounded-xl border border-white/10 bg-white/5 p-6">
               <div className="text-4xl font-extrabold text-white">99.95%</div>
-              <div className="text-sm text-gray-400">Target uptime</div>
+              <div className="text-sm text-gray-400 mt-1">Target uptime</div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/5 p-6">
               <div className="text-4xl font-extrabold text-white">24h</div>
-              <div className="text-sm text-gray-400">Average ticket response</div>
+              <div className="text-sm text-gray-400 mt-1">Average ticket response</div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/5 p-6">
               <div className="text-4xl font-extrabold text-white">0</div>
-              <div className="text-sm text-gray-400">Data sold to third parties</div>
+              <div className="text-sm text-gray-400 mt-1">Data sold to third parties</div>
             </div>
           </div>
         </div>
@@ -568,43 +605,50 @@ export default function Home() {
             <p className="mt-4 text-lg text-gray-300">Select a subscription plan that works best for you</p>
           </div>
           {/* Single Billing Cycle Toggle */}
-          <div className="mt-8 flex items-center justify-center">
-            <div className="relative inline-flex items-center rounded-full bg-white/10 ring-1 ring-white/15 p-1 transition-all duration-300">
+          <div className="mt-8 flex flex-col items-center justify-center gap-2.5">
+            <div className="inline-flex items-center rounded-full bg-white/10 ring-1 ring-white/15 p-1.5 backdrop-blur-md">
               <button
                 onClick={() => setBillingCycle('daily')}
-                className={`px-4 py-1.5 text-sm font-medium transition-colors duration-300 ${billingCycle === 'daily' ? 'text-black' : 'text-white/80'}`}
+                className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+                  billingCycle === 'daily'
+                    ? 'bg-white text-black shadow font-bold'
+                    : 'text-gray-300 hover:text-white'
+                }`}
               >
                 Daily
               </button>
               <button
                 onClick={() => setBillingCycle('monthly')}
-                className={`px-4 py-1.5 text-sm font-medium transition-colors duration-300 ${billingCycle === 'monthly' ? 'text-black' : 'text-white/80'}`}
+                className={`relative px-5 py-2 text-sm font-medium rounded-full transition-all duration-200 flex items-center gap-2 ${
+                  billingCycle === 'monthly'
+                    ? 'bg-white text-black shadow-lg font-extrabold ring-2 ring-indigo-400'
+                    : 'text-gray-200 hover:text-white'
+                }`}
               >
-                Monthly
+                <span>Monthly</span>
+                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-orange-500 text-black px-2 py-0.5 rounded-full shadow-sm">
+                  🔥 Most Bought
+                </span>
               </button>
               <button
                 onClick={() => setBillingCycle('yearly')}
-                className={`px-4 py-1.5 text-sm font-medium transition-colors duration-300 ${billingCycle === 'yearly' ? 'text-black' : 'text-white/80'}`}
-              >
-                Yearly
-              </button>
-              <span
-                className={`absolute top-1 bottom-1 w-[33.333%] rounded-full bg-white text-black text-sm font-semibold grid place-items-center transition-transform duration-300 ${
-                  billingCycle === 'daily' ? 'translate-x-0' : 
-                  billingCycle === 'monthly' ? 'translate-x-full' : 
-                  'translate-x-[200%]'
+                className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 flex items-center gap-1.5 ${
+                  billingCycle === 'yearly'
+                    ? 'bg-white text-black shadow font-bold'
+                    : 'text-gray-300 hover:text-white'
                 }`}
-                aria-hidden
               >
-                {billingCycle === 'daily' ? 'Daily' : billingCycle === 'monthly' ? 'Monthly' : 'Yearly'}
-              </span>
+                <span>Yearly</span>
+                <span className="text-[10px] font-bold text-emerald-300 bg-emerald-950/70 px-1.5 py-0.5 rounded-full border border-emerald-500/30">Save 40%</span>
+              </button>
             </div>
+            <p className="text-xs text-indigo-300/90 font-medium">⚡ 82% of job seekers choose the Monthly Plan for interview preparation</p>
           </div>
           <div className="mt-12">
             <div className="grid gap-8 lg:grid-cols-3">
                 {/* Free Plan (static) */}
-                <div className="bg-white/5 border border-white/10 rounded-lg shadow-lg overflow-hidden relative">
-                  <div className="absolute right-4 top-4 text-xs px-2 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Free</div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl shadow-lg overflow-hidden relative">
+                  <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15 font-medium">Free</div>
                   <div className="px-6 py-8">
                     <h3 className="text-2xl font-bold text-white">Free</h3>
                     <p className="mt-4 text-gray-300">Get started with the core overlay assistant.</p>
@@ -629,8 +673,8 @@ export default function Home() {
                 {billingCycle === 'daily' && (
                   <>
                     {/* Moderate Daily */}
-                    <div className="bg-white/5 border border-white/10 rounded-lg shadow-lg overflow-hidden relative">
-                      <div className="absolute right-4 top-4 text-xs px-2 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Moderate</div>
+                    <div className="bg-white/5 border border-white/10 rounded-2xl shadow-lg overflow-hidden relative">
+                      <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Moderate</div>
                       <div className="px-6 py-8">
                         <h3 className="text-2xl font-bold text-white">Moderate</h3>
                         <p className="mt-1 text-sm text-gray-400">1 Day access</p>
@@ -648,13 +692,13 @@ export default function Home() {
                           <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Smart Screenshots — snap full screen or select a region</span></li>
                           <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Unlimited requests</span></li>
                         </ul>
-                        <a href={subscribeHref('daily')} className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 text-sm font-semibold ring-1 ring-inset ring-white/10 transition-colors">Subscribe Now</a>
+                        <a href={subscribeHref('daily')} className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 text-white py-3 text-sm font-semibold ring-1 ring-inset ring-white/10 transition-colors">Subscribe Now</a>
                       </div>
                     </div>
 
                     {/* Pro Daily */}
-                    <div className="bg-white/5 border border-white/10 rounded-lg shadow-lg overflow-hidden relative">
-                      <div className="absolute right-4 top-4 text-xs px-2 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Pro</div>
+                    <div className="bg-white/5 border border-white/10 rounded-2xl shadow-lg overflow-hidden relative">
+                      <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Pro</div>
                       <div className="px-6 py-8">
                         <h3 className="text-2xl font-bold text-white">Pro</h3>
                         <p className="mt-1 text-sm text-gray-400">1 Day access</p>
@@ -672,7 +716,7 @@ export default function Home() {
                           <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Content Memory — preload your data auto‑applied to Ask & Listen</span></li>
                           <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Unlimited requests</span></li>
                         </ul>
-                        <a href={`${subscribeHref('daily')}&tier=pro`} className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 text-sm font-semibold ring-1 ring-inset ring-white/10 transition-colors">Subscribe Now</a>
+                        <a href={`${subscribeHref('daily')}&tier=pro`} className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 text-white py-3 text-sm font-semibold ring-1 ring-inset ring-white/10 transition-colors">Subscribe Now</a>
                       </div>
                     </div>
                   </>
@@ -681,51 +725,79 @@ export default function Home() {
                 {billingCycle === 'monthly' && (
                   <>
                     {/* Monthly Moderate */}
-                    <div className="bg-white/5 border border-white/10 rounded-lg shadow-lg overflow-hidden relative">
-                      <div className="absolute right-4 top-4 text-xs px-2 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Moderate</div>
+                    <div className="bg-white/5 border border-white/10 rounded-2xl shadow-xl overflow-hidden relative flex flex-col justify-between hover:border-white/20 transition-all duration-300">
+                      <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15 font-medium">Moderate</div>
                       <div className="px-6 py-8">
                         <h3 className="text-2xl font-bold text-white">Monthly Moderate</h3>
-                        <p className="mt-1 text-sm text-gray-400">Moderate plan — 1 month access</p>
-                        <p className="mt-8">
-                          <span className="text-4xl font-extrabold text-white">$12.036</span>
-                          <span className="text-base font-medium text-gray-300">/month</span>
-                          <span className="ml-3 text-2xl font-extrabold text-white">₹999</span>
-                          <span className="block text-xs text-gray-400 mt-1">Shown in USD and INR (approx.)</span>
-                        </p>
+                        <p className="mt-1 text-sm text-gray-300">Moderate plan — 1 month access</p>
+                        <div className="mt-8">
+                          <div className="flex items-baseline gap-3">
+                            <span className="text-4xl font-extrabold text-white">₹999</span>
+                            <span className="text-base font-medium text-gray-300">/month</span>
+                            <span className="text-sm text-gray-400">($12.03)</span>
+                          </div>
+                          <span className="block text-xs text-gray-400 mt-1">Full 30 days access • cancel anytime</span>
+                        </div>
                         <ul className="mt-8 space-y-4 text-sm">
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Most powerful agent models</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Secure data</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Ask: unlimited questions with real‑time answers</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Smart Screenshots — snap full screen or select a region</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Unlimited requests</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Most powerful agent models</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Secure data</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Ask: unlimited questions with real‑time answers</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Smart Screenshots — snap full screen or select a region</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Unlimited requests</span></li>
                         </ul>
-                        <a href={subscribeHref('monthly')} className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 text-sm font-semibold ring-1 ring-inset ring-white/10 transition-colors">Subscribe Now</a>
+                      </div>
+                      <div className="p-6 pt-0">
+                        <a href={subscribeHref('monthly')} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 text-white py-3 text-sm font-semibold ring-1 ring-inset ring-white/15 transition-all">Subscribe Moderate</a>
                       </div>
                     </div>
 
-                    {/* Monthly Premium */}
-                    <div className="bg-white/5 border border-white/10 rounded-lg shadow-lg overflow-hidden relative">
-                      <div className="absolute right-4 top-4 text-xs px-2 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Premium</div>
-                      <div className="px-6 py-8">
-                        <h3 className="text-2xl font-bold text-white">Monthly Premium</h3>
-                        <p className="mt-1 text-sm text-gray-400">Access to premium features with monthly tokens</p>
-                        <p className="mt-8">
-                          <span className="text-4xl font-extrabold text-white">$20</span>
-                          <span className="text-base font-medium text-gray-300">/month</span>
-                          <span className="ml-3 text-2xl font-extrabold text-white">₹1,660</span>
-                          <span className="block text-xs text-gray-400 mt-1">Shown in USD and INR (approx.)</span>
-                        </p>
-                        <ul className="mt-8 space-y-4 text-sm">
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Most powerful agent models</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Secure data</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Live Listen — captures your audio and responds in real time</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Smart Screenshots — snap full screen or select a region</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Content Memory — preload your data auto‑applied to Ask & Listen</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Unlimited requests</span></li>
-                        </ul>
-                        <a href={subscribeHref('monthly')} className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 text-sm font-semibold ring-1 ring-inset ring-white/10 transition-colors">Subscribe Now</a>
+                    {/* Monthly Premium - MOST POPULAR & MOST BOUGHT SHOWSTOPPER */}
+                    <div className="relative rounded-2xl p-[2px] bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 shadow-[0_0_50px_rgba(99,102,241,0.35)] transform lg:-translate-y-3 transition-all duration-300">
+                      <div className="bg-gradient-to-b from-slate-900/95 via-indigo-950/40 to-slate-950/95 rounded-[14px] p-6 sm:p-8 flex flex-col justify-between h-full relative overflow-hidden backdrop-blur-xl">
+                        {/* Top Most Bought Badge */}
+                        <div className="absolute top-0 right-0 bg-gradient-to-r from-amber-500 to-orange-500 text-black text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-bl-xl shadow-lg flex items-center gap-1.5">
+                          <span>🔥</span>
+                          <span>MOST BOUGHT • 82% OF USERS</span>
+                        </div>
+
+                        <div>
+                          <div className="inline-flex items-center gap-1.5 text-xs text-indigo-300 bg-indigo-500/20 border border-indigo-500/30 px-2.5 py-1 rounded-full font-semibold mb-3">
+                            <span>✨</span> Best Value for Interviews
+                          </div>
+                          <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Monthly Premium</h3>
+                          <p className="mt-1 text-sm text-indigo-200/80">Full unrestricted AI power + Live voice listen</p>
+                          <div className="mt-6 p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div className="flex items-baseline gap-3">
+                              <span className="text-4xl sm:text-5xl font-black text-white">₹1,660</span>
+                              <span className="text-base font-semibold text-indigo-200">/month</span>
+                              <span className="text-sm text-gray-400">($20)</span>
+                            </div>
+                            <div className="mt-2 flex items-center gap-2 text-xs text-emerald-400 font-semibold">
+                              <span>✓ Includes Live Listen & Context Memory</span>
+                            </div>
+                          </div>
+                          <ul className="mt-6 space-y-3.5 text-sm">
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-white font-medium">Live Listen — captures audio & answers in real time</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-white font-medium">Content Memory — auto‑preloads your data & resume</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Invisible on screen share and recordings</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Most powerful agent models</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Smart Screenshots — snap full screen or region</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Unlimited requests</span></li>
+                          </ul>
+                        </div>
+                        <div className="mt-8">
+                          <a
+                            href={subscribeHref('monthly')}
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 hover:from-indigo-400 hover:via-purple-500 hover:to-indigo-500 text-white py-3.5 text-base font-bold shadow-[0_0_30px_rgba(99,102,241,0.5)] hover:shadow-[0_0_40px_rgba(99,102,241,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ring-1 ring-white/20"
+                          >
+                            <span>Get Monthly Premium</span>
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                          </a>
+                          <p className="text-center text-[11px] text-gray-400 mt-2">Instant activation • Cancel anytime</p>
+                        </div>
                       </div>
                     </div>
                   </>
