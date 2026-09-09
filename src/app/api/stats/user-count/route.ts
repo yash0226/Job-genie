@@ -5,11 +5,23 @@ export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
-    const url = process.env.PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
-    const serviceRole = process.env.SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY
+    const url = 
+      process.env.NEXT_PUBLIC_SUPABASE_URL || 
+      process.env.PUBLIC_SUPABASE_URL || 
+      process.env.SUPABASE_URL
 
-    // 1. Try service role admin client first (bypasses RLS to get exact row count from public.users) ok
+    const serviceRole = 
+      process.env.SUPABASE_SERVICE_KEY || 
+      process.env.SUPABASE_SERVICE_ROLE_KEY || 
+      process.env.SERVICE_ROLE_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
+
+    const anonKey = 
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
+      process.env.PUBLIC_SUPABASE_ANON_KEY || 
+      process.env.SUPABASE_ANON_KEY
+
+    // 1. Query using service role admin client (bypasses RLS to run SELECT COUNT(*) FROM "public"."users")
     if (url && serviceRole) {
       try {
         const adminClient = createClient(url, serviceRole, {
@@ -19,8 +31,8 @@ export async function GET() {
           .from('users')
           .select('*', { count: 'exact', head: true })
 
-        if (!error && typeof count === 'number' && count > 0) {
-          return NextResponse.json({ count, source: 'database' })
+        if (!error && typeof count === 'number') {
+          return NextResponse.json({ count, total_new_users: count, source: 'database' })
         }
       } catch (adminErr) {
         console.warn('Error fetching count with service role:', adminErr)
@@ -37,17 +49,16 @@ export async function GET() {
           .from('users')
           .select('*', { count: 'exact', head: true })
 
-        if (!error && typeof count === 'number' && count > 0) {
-          return NextResponse.json({ count, source: 'public' })
+        if (!error && typeof count === 'number') {
+          return NextResponse.json({ count, total_new_users: count, source: 'public' })
         }
       } catch (publicErr) {
         console.warn('Error fetching count with anon client:', publicErr)
       }
     }
 
-    // Fallback baseline for social proof if DB credentials are not loaded locally
-    return NextResponse.json({ count: 1820, source: 'fallback' })
+    return NextResponse.json({ count: 0, total_new_users: 0, source: 'database-zero' })
   } catch (err: any) {
-    return NextResponse.json({ count: 1820, source: 'fallback', error: err?.message })
+    return NextResponse.json({ count: 0, total_new_users: 0, error: err?.message })
   }
 }

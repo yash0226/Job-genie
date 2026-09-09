@@ -19,14 +19,14 @@ export default function Home() {
   // Static pricing on landing page for consistent rendering across browsers
   // Single toggle for all plans (defaults to monthly as most bought)
   const [billingCycle, setBillingCycle] = useState<'daily' | 'monthly' | 'yearly'>('monthly')
-  const [userCount, setUserCount] = useState<number>(1820)
+  const [userCount, setUserCount] = useState<number | null>(null)
 
-  // Fetch real-time active user count from database
+  // Fetch real-time count of records from public.users table
   useEffect(() => {
     fetch('/api/stats/user-count')
       .then(res => res.json())
       .then(data => {
-        if (data?.count && typeof data.count === 'number') {
+        if (typeof data?.count === 'number') {
           setUserCount(data.count)
         }
       })
@@ -304,21 +304,38 @@ export default function Home() {
       <section className="relative mx-auto max-w-6xl px-6 pt-20 sm:pt-28">
         <div ref={heroTiltRef} className="transform-gpu transition-transform duration-300 will-change-transform">
           {/* Active Users Social Proof Badge */}
-          <div className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-inner ring-1 ring-white/10 hover:border-indigo-500/30 transition">
-            <div className="flex -space-x-2 overflow-hidden">
-              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-indigo-600 to-indigo-400 text-[10px] font-bold text-white items-center justify-center">JD</span>
-              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-purple-600 to-purple-400 text-[10px] font-bold text-white items-center justify-center">AK</span>
-              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-emerald-600 to-emerald-400 text-[10px] font-bold text-white items-center justify-center">YS</span>
-              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-amber-600 to-amber-400 text-[10px] font-bold text-white items-center justify-center">+</span>
+          {userCount !== null && userCount > 0 ? (
+            <div className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-inner ring-1 ring-white/10 hover:border-indigo-500/30 transition">
+              <div className="flex -space-x-2 overflow-hidden">
+                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-indigo-600 to-indigo-400 text-[10px] font-bold text-white items-center justify-center">JD</span>
+                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-purple-600 to-purple-400 text-[10px] font-bold text-white items-center justify-center">AK</span>
+                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-emerald-600 to-emerald-400 text-[10px] font-bold text-white items-center justify-center">YS</span>
+                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-amber-600 to-amber-400 text-[10px] font-bold text-white items-center justify-center">+</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-200">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span><strong className="text-white font-extrabold">{userCount.toLocaleString()}</strong> registered users on Helvia</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-200">
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span><strong className="text-white font-extrabold">{userCount.toLocaleString()}+</strong> active users trust Helvia</span>
+          ) : (
+            <div className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-inner ring-1 ring-white/10 hover:border-indigo-500/30 transition">
+              <div className="flex -space-x-2 overflow-hidden">
+                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-indigo-600 to-indigo-400 text-[10px] font-bold text-white items-center justify-center">JD</span>
+                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-purple-600 to-purple-400 text-[10px] font-bold text-white items-center justify-center">AK</span>
+                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-emerald-600 to-emerald-400 text-[10px] font-bold text-white items-center justify-center">YS</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-200">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span><strong className="text-white font-extrabold">Active Community</strong> of job seekers & pros</span>
+              </div>
             </div>
-          </div>
+          )}
 
           <h1 className="text-5xl sm:text-7xl font-extrabold leading-[1.05] tracking-tight text-white">
             Never think alone again.
@@ -546,10 +563,10 @@ export default function Home() {
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="rounded-xl border border-indigo-500/30 bg-gradient-to-br from-indigo-900/30 via-white/5 to-white/5 p-6 relative overflow-hidden ring-1 ring-indigo-500/20">
               <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-200 to-indigo-400">
-                {userCount.toLocaleString()}+
+                {userCount !== null ? userCount.toLocaleString() : '...'}
               </div>
-              <div className="text-sm font-semibold text-indigo-200 mt-1">Active Users</div>
-              <div className="text-xs text-gray-400 mt-0.5">Growing community of job seekers</div>
+              <div className="text-sm font-semibold text-indigo-200 mt-1">Registered Users</div>
+              <div className="text-xs text-gray-400 mt-0.5">Live database record count</div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/5 p-6">
               <div className="text-4xl font-extrabold text-white">99.95%</div>
@@ -642,7 +659,7 @@ export default function Home() {
                 <span className="text-[10px] font-bold text-emerald-300 bg-emerald-950/70 px-1.5 py-0.5 rounded-full border border-emerald-500/30">Save 40%</span>
               </button>
             </div>
-            <p className="text-xs text-indigo-300/90 font-medium">⚡ 82% of job seekers choose the Monthly Plan for interview preparation</p>
+            <p className="text-xs text-indigo-300/90 font-medium">⚡ 82% of job seekers choose the Monthly Pro Plan for interview preparation</p>
           </div>
           <div className="mt-12">
             <div className="grid gap-8 lg:grid-cols-3">
@@ -657,11 +674,11 @@ export default function Home() {
                       <span className="text-base font-medium text-gray-300">/forever</span>
                     </p>
                     <ul className="mt-8 space-y-4 text-sm">
-                      <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Invisible on screen share</span></li>
-                      <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Ask: unlimited questions with real‑time answers</span></li>
-                      <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Basic AI models</span></li>
-                      <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Secure data</span></li>
-                      <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Unlimited requests</span></li>
+                      <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Invisible on screen share</span></li>
+                      <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Ask: unlimited questions with real‑time answers</span></li>
+                      <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Basic AI models</span></li>
+                      <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Secure data</span></li>
+                      <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Unlimited requests</span></li>
                     </ul>
                     <div role="status" aria-label="Already in use" className="mt-8 w-full select-none inline-flex items-center justify-center gap-2 bg-white/10 text-white py-2 px-4 rounded-md ring-1 ring-inset ring-white/10">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-emerald-400"><path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-2.59a.75.75 0 1 0-1.22-.86l-3.553 5.046-2.02-2.02a.75.75 0 0 0-1.06 1.06l2.625 2.625a.75.75 0 0 0 1.163-.104l4.065-5.747Z" clipRule="evenodd" /></svg>
@@ -674,7 +691,7 @@ export default function Home() {
                   <>
                     {/* Moderate Daily */}
                     <div className="bg-white/5 border border-white/10 rounded-2xl shadow-lg overflow-hidden relative">
-                      <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Moderate</div>
+                      <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15 font-medium">Moderate</div>
                       <div className="px-6 py-8">
                         <h3 className="text-2xl font-bold text-white">Moderate</h3>
                         <p className="mt-1 text-sm text-gray-400">1 Day access</p>
@@ -685,12 +702,12 @@ export default function Home() {
                           <span className="block text-xs text-gray-400 mt-1">Shown in USD and INR (approx.)</span>
                         </p>
                         <ul className="mt-8 space-y-4 text-sm">
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Most powerful agent models</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Secure data</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Ask: unlimited questions with real‑time answers</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Smart Screenshots — snap full screen or select a region</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Unlimited requests</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Most powerful agent models</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Secure data</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Ask: unlimited questions with real‑time answers</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Smart Screenshots — snap full screen or select a region</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Unlimited requests</span></li>
                         </ul>
                         <a href={subscribeHref('daily')} className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 text-white py-3 text-sm font-semibold ring-1 ring-inset ring-white/10 transition-colors">Subscribe Now</a>
                       </div>
@@ -698,7 +715,7 @@ export default function Home() {
 
                     {/* Pro Daily */}
                     <div className="bg-white/5 border border-white/10 rounded-2xl shadow-lg overflow-hidden relative">
-                      <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15">Pro</div>
+                      <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15 font-medium">Pro</div>
                       <div className="px-6 py-8">
                         <h3 className="text-2xl font-bold text-white">Pro</h3>
                         <p className="mt-1 text-sm text-gray-400">1 Day access</p>
@@ -708,13 +725,13 @@ export default function Home() {
                           <span className="block text-xs text-gray-400 mt-1">Approx. $2.0 (shown for reference)</span>
                         </p>
                         <ul className="mt-8 space-y-4 text-sm">
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Most powerful agent models</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Secure data</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Ask: unlimited questions with real‑time answers</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Smart Screenshots — snap full screen or select a region</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Content Memory — preload your data auto‑applied to Ask & Listen</span></li>
-                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5">✓</span><span className="text-gray-300">Unlimited requests</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Most powerful agent models</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Secure data</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Ask: unlimited questions with real‑time answers</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Smart Screenshots — snap full screen or select a region</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Content Memory — preload your data auto‑applied to Ask & Listen</span></li>
+                          <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Unlimited requests</span></li>
                         </ul>
                         <a href={`${subscribeHref('daily')}&tier=pro`} className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 text-white py-3 text-sm font-semibold ring-1 ring-inset ring-white/10 transition-colors">Subscribe Now</a>
                       </div>
@@ -729,14 +746,15 @@ export default function Home() {
                       <div className="absolute right-4 top-4 text-xs px-2.5 py-1 rounded-full bg-white/10 text-gray-300 ring-1 ring-white/15 font-medium">Moderate</div>
                       <div className="px-6 py-8">
                         <h3 className="text-2xl font-bold text-white">Monthly Moderate</h3>
-                        <p className="mt-1 text-sm text-gray-300">Moderate plan — 1 month access</p>
+                        <p className="mt-1 text-sm text-gray-300">Starter monthly plan — 1 month access</p>
                         <div className="mt-8">
-                          <div className="flex items-baseline gap-3">
-                            <span className="text-4xl font-extrabold text-white">₹999</span>
+                          <div className="flex items-baseline gap-2.5 flex-wrap">
+                            <span className="text-lg text-gray-500 line-through font-semibold">₹799</span>
+                            <span className="text-4xl font-extrabold text-white">₹499</span>
                             <span className="text-base font-medium text-gray-300">/month</span>
-                            <span className="text-sm text-gray-400">($12.03)</span>
+                            <span className="text-sm text-gray-400">($6)</span>
                           </div>
-                          <span className="block text-xs text-gray-400 mt-1">Full 30 days access • cancel anytime</span>
+                          <span className="block text-xs text-gray-400 mt-1">Full 30 days access • basic screen assistant</span>
                         </div>
                         <ul className="mt-8 space-y-4 text-sm">
                           <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
@@ -752,9 +770,9 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Monthly Premium - MOST POPULAR & MOST BOUGHT SHOWSTOPPER */}
-                    <div className="relative rounded-2xl p-[2px] bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 shadow-[0_0_50px_rgba(99,102,241,0.35)] transform lg:-translate-y-3 transition-all duration-300">
-                      <div className="bg-gradient-to-b from-slate-900/95 via-indigo-950/40 to-slate-950/95 rounded-[14px] p-6 sm:p-8 flex flex-col justify-between h-full relative overflow-hidden backdrop-blur-xl">
+                    {/* Monthly Pro - 999 LIMITED TIME DISCOUNT SHOWSTOPPER */}
+                    <div className="relative rounded-2xl p-[2px] bg-gradient-to-b from-amber-400 via-indigo-500 to-purple-600 shadow-[0_0_50px_rgba(99,102,241,0.4)] transform lg:-translate-y-3 transition-all duration-300">
+                      <div className="bg-gradient-to-b from-slate-900/95 via-indigo-950/50 to-slate-950/95 rounded-[14px] p-6 sm:p-8 flex flex-col justify-between h-full relative overflow-hidden backdrop-blur-xl">
                         {/* Top Most Bought Badge */}
                         <div className="absolute top-0 right-0 bg-gradient-to-r from-amber-500 to-orange-500 text-black text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-bl-xl shadow-lg flex items-center gap-1.5">
                           <span>🔥</span>
@@ -762,41 +780,44 @@ export default function Home() {
                         </div>
 
                         <div>
-                          <div className="inline-flex items-center gap-1.5 text-xs text-indigo-300 bg-indigo-500/20 border border-indigo-500/30 px-2.5 py-1 rounded-full font-semibold mb-3">
-                            <span>✨</span> Best Value for Interviews
+                          <div className="inline-flex items-center gap-1.5 text-xs text-amber-300 bg-amber-500/20 border border-amber-500/30 px-3 py-1 rounded-full font-bold mb-3">
+                            <span>⚡</span> LIMITED TIME DISCOUNT — SAVE 50%
                           </div>
-                          <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Monthly Premium</h3>
-                          <p className="mt-1 text-sm text-indigo-200/80">Full unrestricted AI power + Live voice listen</p>
-                          <div className="mt-6 p-4 rounded-xl bg-white/5 border border-white/10">
-                            <div className="flex items-baseline gap-3">
-                              <span className="text-4xl sm:text-5xl font-black text-white">₹1,660</span>
+                          <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Monthly Pro</h3>
+                          <p className="mt-1 text-sm text-indigo-200/90">Full unrestricted AI power + Live voice listen & memory</p>
+                          
+                          <div className="mt-6 p-4 rounded-xl bg-white/5 border border-indigo-500/30 shadow-inner">
+                            <div className="flex items-baseline gap-3 flex-wrap">
+                              <span className="text-2xl text-gray-500 line-through font-bold">₹1,999</span>
+                              <span className="text-4xl sm:text-5xl font-black text-emerald-400">₹999</span>
                               <span className="text-base font-semibold text-indigo-200">/month</span>
-                              <span className="text-sm text-gray-400">($20)</span>
+                              <span className="text-sm text-gray-400">($12.03)</span>
                             </div>
-                            <div className="mt-2 flex items-center gap-2 text-xs text-emerald-400 font-semibold">
-                              <span>✓ Includes Live Listen & Context Memory</span>
+                            <div className="mt-2 inline-flex items-center gap-1.5 text-xs text-emerald-300 font-bold bg-emerald-950/70 border border-emerald-500/40 px-2.5 py-1 rounded-full">
+                              <span>🎉</span> Special Offer: ₹1,000 Flat Discount • Limited Time
                             </div>
                           </div>
+
                           <ul className="mt-6 space-y-3.5 text-sm">
                             <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-white font-medium">Live Listen — captures audio & answers in real time</span></li>
                             <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-white font-medium">Content Memory — auto‑preloads your data & resume</span></li>
                             <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Invisible on screen share and recordings</span></li>
                             <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Most powerful agent models</span></li>
                             <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Smart Screenshots — snap full screen or region</span></li>
-                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Unlimited requests</span></li>
+                            <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-200">Unlimited requests & priority latency</span></li>
                           </ul>
                         </div>
                         <div className="mt-8">
                           <a
-                            href={subscribeHref('monthly')}
-                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 hover:from-indigo-400 hover:via-purple-500 hover:to-indigo-500 text-white py-3.5 text-base font-bold shadow-[0_0_30px_rgba(99,102,241,0.5)] hover:shadow-[0_0_40px_rgba(99,102,241,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ring-1 ring-white/20"
+                            href={`${subscribeHref('monthly')}&tier=pro`}
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-indigo-600 to-purple-600 hover:from-amber-400 hover:via-indigo-500 hover:to-purple-500 text-white py-3.5 text-base font-bold shadow-[0_0_35px_rgba(99,102,241,0.55)] hover:shadow-[0_0_45px_rgba(99,102,241,0.75)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ring-1 ring-white/20"
                           >
-                            <span>Get Monthly Premium</span>
+                            <span>Get Pro at ₹999 (50% OFF)</span>
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
                           </a>
-                          <p className="text-center text-[11px] text-gray-400 mt-2">Instant activation • Cancel anytime</p>
+                          <p className="text-center text-[11px] text-gray-400 mt-2">Instant activation • Special promotional price</p>
                         </div>
                       </div>
                     </div>
