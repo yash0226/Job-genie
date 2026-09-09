@@ -304,38 +304,25 @@ export default function Home() {
       <section className="relative mx-auto max-w-6xl px-6 pt-20 sm:pt-28">
         <div ref={heroTiltRef} className="transform-gpu transition-transform duration-300 will-change-transform">
           {/* Active Users Social Proof Badge */}
-          {userCount !== null && userCount > 0 ? (
-            <div className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-inner ring-1 ring-white/10 hover:border-indigo-500/30 transition">
-              <div className="flex -space-x-2 overflow-hidden">
-                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-indigo-600 to-indigo-400 text-[10px] font-bold text-white items-center justify-center">JD</span>
-                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-purple-600 to-purple-400 text-[10px] font-bold text-white items-center justify-center">AK</span>
-                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-emerald-600 to-emerald-400 text-[10px] font-bold text-white items-center justify-center">YS</span>
-                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-amber-600 to-amber-400 text-[10px] font-bold text-white items-center justify-center">+</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-200">
-                <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span><strong className="text-white font-extrabold">{userCount.toLocaleString()}</strong> registered users on Helvia</span>
-              </div>
+          <div className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-inner ring-1 ring-white/10 hover:border-indigo-500/30 transition">
+            <div className="flex -space-x-2 overflow-hidden">
+              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-indigo-600 to-indigo-400 text-[10px] font-bold text-white items-center justify-center">JD</span>
+              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-purple-600 to-purple-400 text-[10px] font-bold text-white items-center justify-center">AK</span>
+              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-emerald-600 to-emerald-400 text-[10px] font-bold text-white items-center justify-center">YS</span>
+              <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-amber-600 to-amber-400 text-[10px] font-bold text-white items-center justify-center">+</span>
             </div>
-          ) : (
-            <div className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-inner ring-1 ring-white/10 hover:border-indigo-500/30 transition">
-              <div className="flex -space-x-2 overflow-hidden">
-                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-indigo-600 to-indigo-400 text-[10px] font-bold text-white items-center justify-center">JD</span>
-                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-purple-600 to-purple-400 text-[10px] font-bold text-white items-center justify-center">AK</span>
-                <span className="inline-flex h-6 w-6 rounded-full ring-2 ring-black bg-gradient-to-tr from-emerald-600 to-emerald-400 text-[10px] font-bold text-white items-center justify-center">YS</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-200">
-                <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span><strong className="text-white font-extrabold">Active Community</strong> of job seekers & pros</span>
-              </div>
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-200">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span>
+                <strong className="text-white font-extrabold">
+                  {userCount !== null ? userCount.toLocaleString() : '...'}
+                </strong> registered users on Helvia
+              </span>
             </div>
-          )}
+          </div>
 
           <h1 className="text-5xl sm:text-7xl font-extrabold leading-[1.05] tracking-tight text-white">
             Never think alone again.

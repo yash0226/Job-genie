@@ -29,11 +29,21 @@ export default function Subscribe() {
   const [error, setError] = useState<string | null>(null)
   // Single toggle for all plans (defaults to monthly as most bought)
   const [billingCycle, setBillingCycle] = useState<'daily' | 'monthly' | 'yearly'>('monthly')
+  const [userCount, setUserCount] = useState<number | null>(null)
   // Display INR alongside USD; can be configured via env
   const USD_TO_INR = Number(process.env.NEXT_PUBLIC_USD_TO_INR ?? '83')
 
   useEffect(() => {
     loadPlans()
+    fetch('/api/stats/user-count')
+      .then(res => res.json())
+      .then(data => {
+        if (typeof data?.count === 'number') {
+          setUserCount(data.count)
+        }
+      })
+      .catch(() => {})
+
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search)
       const cycle = params.get('cycle') as 'daily' | 'monthly' | 'yearly' | null
@@ -250,7 +260,9 @@ export default function Subscribe() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span>Join our community of verified job seekers & professionals</span>
+            <span>
+              Join <strong className="text-white font-bold">{userCount !== null ? userCount.toLocaleString() : 'our'}</strong> registered job seekers & professionals
+            </span>
           </div>
         </div>
 
