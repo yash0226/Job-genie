@@ -318,8 +318,8 @@ export default function Home() {
               </span>
               <span>
                 <strong className="text-white font-extrabold">
-                  {userCount !== null ? userCount.toLocaleString() : '...'}
-                </strong> registered users on Helvia
+                  {userCount !== null ? `${userCount.toLocaleString()}+` : '...'}
+                </strong> professionals trust & use Helvia to win interviews
               </span>
             </div>
           </div>
@@ -550,10 +550,10 @@ export default function Home() {
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="rounded-xl border border-indigo-500/30 bg-gradient-to-br from-indigo-900/30 via-white/5 to-white/5 p-6 relative overflow-hidden ring-1 ring-indigo-500/20">
               <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-200 to-indigo-400">
-                {userCount !== null ? userCount.toLocaleString() : '...'}
+                {userCount !== null ? `${userCount.toLocaleString()}+` : '...'}
               </div>
-              <div className="text-sm font-semibold text-indigo-200 mt-1">Registered Users</div>
-              <div className="text-xs text-gray-400 mt-0.5">Live database record count</div>
+              <div className="text-sm font-semibold text-indigo-200 mt-1">Professionals Using Helvia</div>
+              <div className="text-xs text-gray-400 mt-0.5">Actively used in live calls & interviews</div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/5 p-6">
               <div className="text-4xl font-extrabold text-white">99.95%</div>
@@ -736,12 +736,12 @@ export default function Home() {
                         <p className="mt-1 text-sm text-gray-300">Starter monthly plan — 1 month access</p>
                         <div className="mt-8">
                           <div className="flex items-baseline gap-2.5 flex-wrap">
-                            <span className="text-lg text-gray-500 line-through font-semibold">₹799</span>
-                            <span className="text-4xl font-extrabold text-white">₹499</span>
+                            <span className="text-lg text-gray-500 line-through font-semibold">₹1,499</span>
+                            <span className="text-4xl font-extrabold text-white">₹999</span>
                             <span className="text-base font-medium text-gray-300">/month</span>
-                            <span className="text-sm text-gray-400">($6)</span>
+                            <span className="text-sm text-gray-400">($12)</span>
                           </div>
-                          <span className="block text-xs text-gray-400 mt-1">Full 30 days access • basic screen assistant</span>
+                          <span className="block text-xs text-gray-400 mt-1">Full 30 days access • smart screen assistant</span>
                         </div>
                         <ul className="mt-8 space-y-4 text-sm">
                           <li className="flex items-start gap-3"><span className="text-emerald-400 mt-0.5 font-bold">✓</span><span className="text-gray-300">Invisible on screen share and recordings</span></li>
@@ -753,7 +753,7 @@ export default function Home() {
                         </ul>
                       </div>
                       <div className="p-6 pt-0">
-                        <a href={subscribeHref('monthly')} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 text-white py-3 text-sm font-semibold ring-1 ring-inset ring-white/15 transition-all">Subscribe Moderate</a>
+                        <a href={subscribeHref('monthly')} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 text-white py-3 text-sm font-semibold ring-1 ring-inset ring-white/15 transition-all">Subscribe Moderate at ₹999</a>
                       </div>
                     </div>
 

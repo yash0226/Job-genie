@@ -261,7 +261,7 @@ export default function Subscribe() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span>
-              Join <strong className="text-white font-bold">{userCount !== null ? userCount.toLocaleString() : 'our'}</strong> registered job seekers & professionals
+              Join <strong className="text-white font-bold">{userCount !== null ? `${userCount.toLocaleString()}+` : ''}</strong> professionals who trust & use Helvia to crack their interviews
             </span>
           </div>
         </div>
