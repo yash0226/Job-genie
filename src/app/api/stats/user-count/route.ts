@@ -9,7 +9,7 @@ export async function GET() {
     const serviceRole = process.env.SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY
     const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY
 
-    // 1. Try service role admin client first (bypasses RLS to get exact row count from public.users)
+    // 1. Try service role admin client first (bypasses RLS to get exact row count from public.users) ok
     if (url && serviceRole) {
       try {
         const adminClient = createClient(url, serviceRole, {
