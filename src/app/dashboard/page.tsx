@@ -11,7 +11,6 @@ type User = Database['public']['Tables']['users']['Row']
 export default function Dashboard() {
   const router = useRouter()
   const jobgenieUrl = 'https://chromewebstore.google.com/detail/bneiakaceagbgndkbmjdchnmhceldljb?utm_source=item-share-cb'
-  const advancedAppUrl = 'https://pub-a6898af319b24d7a8750a5639efe6b15.r2.dev/helvia-meet%20setup.exe'
   const [userDetails, setUserDetails] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [showEarlySignup, setShowEarlySignup] = useState(false)
@@ -217,24 +216,13 @@ export default function Dashboard() {
                     <li>Auto-apply with tailored answers and tracking</li>
                     <li>Review progress in a single dashboard</li>
                   </ul>
-                  {/* Download Advanced Version and JobGenie links */}
-                  <div className="mt-5 flex flex-wrap items-center gap-3">
-                    <a
-                      href={advancedAppUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium shadow ring-1 ring-inset ring-white/10 transition-colors w-full sm:w-auto"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-                        <path fillRule="evenodd" d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clipRule="evenodd" />
-                      </svg>
-                      Download Advanced Version (.exe)
-                    </a>
+                  {/* Bottom-left persistent JobGenie link inside Early Access */}
+                  <div className="mt-4">
                     <a
                       href={jobgenieUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-sm font-medium ring-1 ring-inset ring-white/10 transition-colors w-full sm:w-auto"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium shadow ring-1 ring-inset ring-white/10 transition-colors w-full sm:w-auto"
                     >
                       Open JobGenie
                     </a>
@@ -251,25 +239,13 @@ export default function Dashboard() {
                         </div>
                         <p className="mt-2 text-xs text-gray-400">Please store these safely. You’ll need them when JobGenie access opens.</p>
                       </div>
-                      <div className="flex flex-col sm:flex-row gap-2">
-                        <a
-                          href={advancedAppUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white/10 hover:bg-white/20 text-white text-sm font-medium ring-1 ring-inset ring-white/10 transition-colors w-full sm:w-auto"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-                            <path fillRule="evenodd" d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clipRule="evenodd" />
-                          </svg>
-                          Download App
-                        </a>
-                        <button
-                          onClick={() => router.push('/dashboard/subscribe')}
-                          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium shadow ring-1 ring-inset ring-white/10 transition-colors w-full sm:w-auto"
-                        >
-                          Upgrade to Premium
-                        </button>
-                      </div>
+                      {/* Link lives in the header for global access */}
+                      <button
+                        onClick={() => router.push('/dashboard/subscribe')}
+                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium shadow ring-1 ring-inset ring-white/10 transition-colors w-full sm:w-auto"
+                      >
+                        Upgrade to Premium — get free access
+                      </button>
                     </div>
                   )}
                   {!accountLocked && !showEarlySignup ? (

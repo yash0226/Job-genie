@@ -334,14 +334,23 @@ export default function Home() {
             understanding your screen to deliver context‑aware answers, notes, and summaries in real time—without
             anyone else seeing it.
           </p>
-          <div className="mt-7 flex flex-col sm:flex-row gap-3">
+          <div className="mt-7 flex flex-col sm:flex-row flex-wrap items-center gap-3">
             <a
               href="https://pub-03bc99680a6b4ba8b50e492f9a12a142.r2.dev/helvia%20setup.exe"
-              className="inline-flex items-center gap-2 rounded-xl bg-white text-black px-5 py-3 text-sm shadow-[0_6px_0_rgba(0,0,0,0.6)] hover:shadow-[0_6px_0_rgba(0,0,0,0.7)] transition-shadow"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-black px-5 py-3 text-sm font-semibold shadow-[0_6px_0_rgba(0,0,0,0.6)] hover:shadow-[0_6px_0_rgba(0,0,0,0.7)] transition-shadow w-full sm:w-auto"
             >
               Download for Windows
             </a>
-            <Link href="#how-it-works" className="inline-flex items-center gap-2 rounded-xl border border-white/12 bg-black/40 px-5 py-3 text-sm shadow-sm hover:bg-black/60 transition">
+            <a
+              href="https://pub-a6898af319b24d7a8750a5639efe6b15.r2.dev/helvia-meet%20setup.exe"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-black px-5 py-3 text-sm font-semibold shadow-[0_6px_0_rgba(0,0,0,0.6)] hover:shadow-[0_6px_0_rgba(0,0,0,0.7)] transition-shadow w-full sm:w-auto ring-1 ring-black/10"
+            >
+              <span>Download Advanced Version</span>
+              <span className="rounded bg-indigo-600 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                Advanced
+              </span>
+            </a>
+            <Link href="#how-it-works" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/12 bg-black/40 px-5 py-3 text-sm shadow-sm hover:bg-black/60 transition w-full sm:w-auto">
               See how it works
             </Link>
           </div>
