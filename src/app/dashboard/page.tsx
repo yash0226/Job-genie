@@ -10,33 +10,12 @@ type User = Database['public']['Tables']['users']['Row']
 
 export default function Dashboard() {
   const router = useRouter()
-  const jobgenieUrl = 'https://chromewebstore.google.com/detail/bneiakaceagbgndkbmjdchnmhceldljb?utm_source=item-share-cb'
   const advancedDownloadUrl = 'https://pub-a6898af319b24d7a8750a5639efe6b15.r2.dev/helvia-meet%20setup.exe'
   const [userDetails, setUserDetails] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const [showEarlySignup, setShowEarlySignup] = useState(false)
-  const [earlyUsername, setEarlyUsername] = useState('')
-  const [earlyPassword, setEarlyPassword] = useState('')
-  const [earlyLoading, setEarlyLoading] = useState(false)
-  const [earlyMessage, setEarlyMessage] = useState<string | null>(null)
-  const [earlyError, setEarlyError] = useState<string | null>(null)
-  const [createdCreds, setCreatedCreds] = useState<{ username: string; password: string } | null>(null)
-  const [accountLocked, setAccountLocked] = useState(false)
 
   useEffect(() => {
     loadUserDetails()
-    // Restore saved credentials from this browser only
-    try {
-      if (typeof window !== 'undefined') {
-        const savedUser = localStorage.getItem('jobgenie_username')
-        const savedPass = localStorage.getItem('jobgenie_password')
-        const flag = localStorage.getItem('jobgenie_account_created')
-        if (savedUser && savedPass) {
-          setCreatedCreds({ username: savedUser, password: savedPass })
-        }
-        if (flag === 'true') setAccountLocked(true)
-      }
-    } catch {}
   }, [])
 
   const loadUserDetails = async () => {
@@ -168,29 +147,17 @@ export default function Dashboard() {
                 </div>
 
                 <div className="rounded-xl bg-black/40 border border-white/10 p-5">
-                  <h3 className="text-sm text-gray-400">Quick actions</h3>
-                  <p className="mt-2 text-sm text-gray-300">Upgrade plan or download desktop client.</p>
-                  <div className="mt-4 flex flex-wrap items-center gap-2.5">
-                    <button
-                      onClick={() => router.push('/dashboard/subscribe')}
-                      className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium shadow ring-1 ring-inset ring-white/10 transition-colors"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
-                      {userDetails?.subscription_type ? 'Manage Plan' : 'Get Premium'}
-                    </button>
-                    <a
-                      href={advancedDownloadUrl}
-                      className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-md bg-white text-black hover:bg-gray-100 text-sm font-medium shadow transition-colors"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-                        <path fillRule="evenodd" d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clipRule="evenodd" />
-                      </svg>
-                      Download Advanced
-                    </a>
-                  </div>
+                  <h3 className="text-sm text-gray-400">Quick action</h3>
+                  <p className="mt-2 text-sm text-gray-300">Upgrade or manage your subscription.</p>
+                  <button
+                    onClick={() => router.push('/dashboard/subscribe')}
+                    className="mt-4 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium shadow ring-1 ring-inset ring-white/10 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                    {userDetails?.subscription_type ? 'Manage Subscription' : 'Get Premium'}
+                  </button>
                 </div>
               </div>
-              {/* Open JobGenie button lives only in Early Access section */}
             </section>
 
             {/* Highlights / Tips */}
@@ -215,11 +182,11 @@ export default function Dashboard() {
               </div>
             </aside>
           </div>
-          {/* Early Access: Advanced Version & JobGenie */}
+          {/* Early Access: Advanced Version (Helvia Meet) */}
           <div className="max-w-7xl mx-auto mt-6">
             <section className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md p-6 sm:p-8">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <div className="flex-1">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+                <div>
                   <div className="flex items-center gap-2 mb-2">
                     <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 ring-1 ring-inset ring-indigo-500/30">
                       Early Access
@@ -229,17 +196,15 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <h2 className="text-xl sm:text-2xl font-bold text-white">Early Access: Advanced Version (Helvia Meet)</h2>
-                  <p className="mt-2 text-sm text-gray-300">
-                    Download the advanced desktop client for Windows with real-time AI whispers and meeting assistance, plus automated job applications with JobGenie.
+                  <p className="mt-2 text-sm text-gray-300 max-w-2xl">
+                    Download the advanced desktop client for Windows with real-time AI whispers and meeting assistance.
                   </p>
                   <ul className="mt-3 space-y-2 text-sm text-gray-300 list-disc list-inside">
                     <li>Real-time desktop meeting assistant & context-aware whispers</li>
-                    <li>Connect your platforms securely (LinkedIn, Naukri, Internshala)</li>
-                    <li>Auto-apply with tailored answers and tracking</li>
-                    <li>Review progress and meeting insights in a single dashboard</li>
+                    <li>Context-aware answers without breaking eye contact</li>
+                    <li>Live meeting notes, summaries, and screen intelligence</li>
                   </ul>
-                  {/* Action buttons with prominent Download button */}
-                  <div className="mt-5 flex flex-wrap items-center gap-3">
+                  <div className="mt-5">
                     <a
                       href={advancedDownloadUrl}
                       className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-xl bg-white hover:bg-gray-100 text-black text-sm font-semibold shadow-[0_6px_0_rgba(0,0,0,0.6)] hover:shadow-[0_6px_0_rgba(0,0,0,0.7)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 w-full sm:w-auto"
@@ -249,133 +214,7 @@ export default function Dashboard() {
                       </svg>
                       Download Advanced Version (.exe)
                     </a>
-                    <a
-                      href={jobgenieUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium shadow ring-1 ring-inset ring-white/10 transition-colors w-full sm:w-auto"
-                    >
-                      Open JobGenie
-                    </a>
                   </div>
-                </div>
-                <div className="w-full md:w-96">
-                  {accountLocked && createdCreds && (
-                    <div className="space-y-3">
-                      <div className="rounded-md border border-emerald-500/30 bg-emerald-500/10 p-4">
-                        <h4 className="text-sm font-semibold text-emerald-300">Your JobGenie credentials</h4>
-                        <div className="mt-2 grid grid-cols-1 gap-2 text-sm">
-                          <div className="text-gray-300">Username: <span className="text-white font-medium">{createdCreds.username}</span></div>
-                          <div className="text-gray-300">Password: <span className="text-white font-medium">{createdCreds.password}</span></div>
-                        </div>
-                        <p className="mt-2 text-xs text-gray-400">Please store these safely. You’ll need them when JobGenie access opens.</p>
-                      </div>
-                      {/* Link lives in the header for global access */}
-                      <button
-                        onClick={() => router.push('/dashboard/subscribe')}
-                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium shadow ring-1 ring-inset ring-white/10 transition-colors w-full sm:w-auto"
-                      >
-                        Upgrade to Premium — get free access
-                      </button>
-                    </div>
-                  )}
-                  {!accountLocked && !showEarlySignup ? (
-                    <button
-                      onClick={() => setShowEarlySignup(true)}
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white/10 hover:bg-white/20 text-white text-sm ring-1 ring-inset ring-white/10 transition-colors"
-                    >
-                      Wanna try? Create an account
-                    </button>
-                  ) : !accountLocked ? (
-                    <form
-                      onSubmit={async (e) => {
-                        e.preventDefault()
-                        setEarlyError(null)
-                        setEarlyMessage(null)
-                        if (earlyUsername.trim().length < 3) {
-                          setEarlyError('Username must be at least 3 characters')
-                          return
-                        }
-                        if (earlyPassword.length < 6) {
-                          setEarlyError('Password must be at least 6 characters')
-                          return
-                        }
-                        try {
-                          setEarlyLoading(true)
-                          const res = await fetch('/api/app-users', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ username: earlyUsername.trim(), password: earlyPassword })
-                          })
-                          const data = await res.json()
-                          if (!res.ok) {
-                            setEarlyError(data?.error || 'Failed to create account')
-                          } else {
-                            setEarlyMessage('Account created! Save your credentials below.')
-                            setCreatedCreds({ username: earlyUsername.trim(), password: earlyPassword })
-                            try {
-                              localStorage.setItem('jobgenie_account_created', 'true')
-                              localStorage.setItem('jobgenie_username', earlyUsername.trim())
-                              localStorage.setItem('jobgenie_password', earlyPassword)
-                            } catch {}
-                            setAccountLocked(true)
-                            setEarlyUsername('')
-                            setEarlyPassword('')
-                          }
-                        } catch (err: any) {
-                          setEarlyError(err?.message || 'Network error')
-                        } finally {
-                          setEarlyLoading(false)
-                        }
-                      }}
-                      className="space-y-3"
-                    >
-                      <div>
-                        <label className="block text-sm text-gray-300 mb-1">Username</label>
-                        <input
-                          type="text"
-                          value={earlyUsername}
-                          onChange={(e) => setEarlyUsername(e.target.value)}
-                          placeholder="yourname"
-                          className="w-full rounded-md bg-black/40 border border-white/10 text-white placeholder:text-gray-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm text-gray-300 mb-1">Password</label>
-                        <input
-                          type="password"
-                          value={earlyPassword}
-                          onChange={(e) => setEarlyPassword(e.target.value)}
-                          placeholder="••••••••"
-                          className="w-full rounded-md bg-black/40 border border-white/10 text-white placeholder:text-gray-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                          required
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="submit"
-                          disabled={earlyLoading}
-                          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-medium shadow ring-1 ring-inset ring-white/10 transition-colors"
-                        >
-                          {earlyLoading ? 'Creating...' : 'Create account'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setShowEarlySignup(false)}
-                          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white/10 hover:bg-white/20 text-white text-sm ring-1 ring-inset ring-white/10 transition-colors"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                      {(earlyError || earlyMessage) && (
-                        <p className={`text-sm ${earlyError ? 'text-rose-300' : 'text-emerald-300'}`}>
-                          {earlyError || earlyMessage}
-                        </p>
-                      )}
-                    </form>
-                  ) : null}
-                  {/* Link only in header to avoid duplication */}
                 </div>
               </div>
             </section>
