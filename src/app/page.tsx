@@ -334,25 +334,55 @@ export default function Home() {
             understanding your screen to deliver context‑aware answers, notes, and summaries in real time—without
             anyone else seeing it.
           </p>
-          <div className="mt-7 flex flex-col sm:flex-row flex-wrap items-center gap-3">
-            <a
-              href="https://pub-03bc99680a6b4ba8b50e492f9a12a142.r2.dev/helvia%20setup.exe"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-black px-5 py-3 text-sm font-semibold shadow-[0_6px_0_rgba(0,0,0,0.6)] hover:shadow-[0_6px_0_rgba(0,0,0,0.7)] transition-shadow w-full sm:w-auto"
-            >
-              Download for Windows
-            </a>
+          <div className="mt-8 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3.5">
+            {/* Primary CTA: Advanced Version */}
             <a
               href="https://pub-a6898af319b24d7a8750a5639efe6b15.r2.dev/helvia-meet%20setup.exe"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-black px-5 py-3 text-sm font-semibold shadow-[0_6px_0_rgba(0,0,0,0.6)] hover:shadow-[0_6px_0_rgba(0,0,0,0.7)] transition-shadow w-full sm:w-auto ring-1 ring-black/10"
+              className="group relative inline-flex items-center justify-center gap-2.5 rounded-xl bg-white text-black px-5 py-3.5 text-sm font-bold shadow-[0_6px_0_rgba(0,0,0,0.6)] hover:shadow-[0_3px_0_rgba(0,0,0,0.6)] hover:translate-y-[3px] active:translate-y-[5px] transition-all duration-150 ring-2 ring-indigo-400/40"
             >
+              <svg className="w-4 h-4 text-indigo-600 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801"/>
+              </svg>
               <span>Download Advanced Version</span>
-              <span className="rounded bg-indigo-600 text-white px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
-                Advanced
+              <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-white shadow-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Meet
               </span>
             </a>
-            <Link href="#how-it-works" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/12 bg-black/40 px-5 py-3 text-sm shadow-sm hover:bg-black/60 transition w-full sm:w-auto">
-              See how it works
+
+            {/* Secondary CTA: Standard Edition */}
+            <a
+              href="https://pub-03bc99680a6b4ba8b50e492f9a12a142.r2.dev/helvia%20setup.exe"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/10 hover:bg-white/15 hover:border-white/25 text-gray-200 hover:text-white px-5 py-3.5 text-sm font-semibold backdrop-blur-md shadow-sm transition-all duration-150"
+            >
+              <svg className="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801"/>
+              </svg>
+              <span>Standard Edition</span>
+            </a>
+
+            {/* Video Demo Link */}
+            <Link
+              href="#how-it-works"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-black/40 hover:bg-black/60 hover:border-white/20 text-gray-300 hover:text-white px-5 py-3.5 text-sm font-medium shadow-sm transition-all duration-150"
+            >
+              <svg className="w-4 h-4 text-indigo-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <span>See how it works</span>
             </Link>
+          </div>
+
+          {/* Subtitle helper metadata */}
+          <div className="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-400">
+            <span className="flex items-center gap-1.5 text-gray-300 font-medium">
+              <span className="h-1.5 w-1.5 rounded-full bg-indigo-400"></span>
+              <strong>Advanced</strong>: Real-time meeting assistant with live audio & screen
+            </span>
+            <span className="hidden sm:inline text-gray-600">•</span>
+            <span className="text-gray-400">Windows 10/11 (64-bit)</span>
+            <span className="hidden sm:inline text-gray-600">•</span>
+            <span className="text-emerald-400 font-medium">Free download</span>
           </div>
 
           
