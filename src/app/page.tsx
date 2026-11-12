@@ -336,7 +336,7 @@ export default function Home() {
           </p>
           <div className="mt-7 flex flex-col sm:flex-row gap-3">
             <a
-              href="https://pub-a6898af319b24d7a8750a5639efe6b15.r2.dev/helvia-meet%20setup.exe"
+              href="https://pub-03bc99680a6b4ba8b50e492f9a12a142.r2.dev/helvia%20setup.exe"
               className="inline-flex items-center gap-2 rounded-xl bg-white text-black px-5 py-3 text-sm shadow-[0_6px_0_rgba(0,0,0,0.6)] hover:shadow-[0_6px_0_rgba(0,0,0,0.7)] transition-shadow"
             >
               Download for Windows
