@@ -10,7 +10,6 @@ type User = Database['public']['Tables']['users']['Row']
 
 export default function Dashboard() {
   const router = useRouter()
-  const advancedDownloadUrl = 'https://pub-a6898af319b24d7a8750a5639efe6b15.r2.dev/helvia-meet%20setup.exe'
   const [userDetails, setUserDetails] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -181,43 +180,6 @@ export default function Dashboard() {
                 <p className="text-xs text-gray-300">Tip: You can upgrade anytime — changes apply instantly.</p>
               </div>
             </aside>
-          </div>
-          {/* Early Access: Advanced Version (Helvia Meet) */}
-          <div className="max-w-7xl mx-auto mt-6">
-            <section className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md p-6 sm:p-8">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 ring-1 ring-inset ring-indigo-500/30">
-                      Early Access
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30">
-                      Advanced Version
-                    </span>
-                  </div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-white">Early Access: Advanced Version (Helvia Meet)</h2>
-                  <p className="mt-2 text-sm text-gray-300 max-w-2xl">
-                    Download the advanced desktop client for Windows with real-time AI whispers and meeting assistance.
-                  </p>
-                  <ul className="mt-3 space-y-2 text-sm text-gray-300 list-disc list-inside">
-                    <li>Real-time desktop meeting assistant & context-aware whispers</li>
-                    <li>Context-aware answers without breaking eye contact</li>
-                    <li>Live meeting notes, summaries, and screen intelligence</li>
-                  </ul>
-                  <div className="mt-5">
-                    <a
-                      href={advancedDownloadUrl}
-                      className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-xl bg-white hover:bg-gray-100 text-black text-sm font-semibold shadow-[0_6px_0_rgba(0,0,0,0.6)] hover:shadow-[0_6px_0_rgba(0,0,0,0.7)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 w-full sm:w-auto"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-                        <path fillRule="evenodd" d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clipRule="evenodd" />
-                      </svg>
-                      Download Advanced Version (.exe)
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </section>
           </div>
         </div>
       </div>
